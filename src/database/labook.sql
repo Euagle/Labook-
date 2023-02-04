@@ -29,12 +29,12 @@ DROP TABLE posts;
 CREATE TABLE likes_dislikes (
   user_id TEXT NOT  NULL,
   post_id TEXT NOT  NULL,
-  like INTEGER NOT  NULL
+  like INTEGER NOT  NULL,
    FOREIGN KEY (user_id) REFERENCES users (id)
     FOREIGN KEY (post_id) REFERENCES posts (id)
 );
 
-
+DROP TABLE likes_dislikes;
 
 --populando as seguintes tabelas: users, posts e likes_dislikes
 
@@ -48,17 +48,23 @@ VALUES("a01", "Gleice", "gleiscylima@gmail.com", "gleicea123", "usuario"),
 
 
 INSERT INTO posts(id, creator_id,  content, likes, dislikes  )
-VALUES("p01", "a01", "Foto na praia", "300", "2" ),
-("p02", "a02", "Foto do céu", "100", "5" ),
-("p03", "a03", "Foto da cachoeira", "800", "0" ),
-("p04", "a04", "Foto do por do sol", "500", "0" ),
-("p05", "a05", "Foto do mar", "700", "1" );
+VALUES("p01", "a01", "Foto na praia", 300, 2 ),
+("p02", "a02", "Foto do céu", 100, 5 ),
+("p03", "a03", "Foto da cachoeira", 800, 0 ),
+("p04", "a04", "Foto do por do sol", 500, 0 ),
+("p05", "a05", "Foto do mar", 700 , 1 );
 
+DROP TABLE posts;
 
 INSERT INTO likes_dislikes( user_id,  post_id,  like  )
-VALUES("a01", "p01", "" )
+VALUES("a01", "p01", 300 ),
+("a02", "p01", 101 ),
+("a03", "p01", 800 ),
+("a04", "p04", 505 ),
+("a05", "p05", 700 )
+;
 
-
+DROP TABLE likes_dislikes;
 --verificando as tabelas
 SELECT * FROM users;
 SELECT * FROM posts;
