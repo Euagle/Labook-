@@ -4,11 +4,11 @@
 
 --criando as seguintes tabelas: users, posts e likes_dislikes
 CREATE TABLE users (
-  id TEXT PK UNIQUE NOT  NULL,
+  id TEXT PK UNIQUE DEFAULT NULL ,
   name TEXT NOT  NULL,
   email TEXT  NOT  NULL,
   password TEXT NOT  NULL,
-  role TEXT NOT  NULL,
+  role TEXT DEFAULT NULL ,
   created_at TEXT DEFAULT (DATETIME('now')) NOT NULL
 );
 DROP TABLE users;
@@ -40,11 +40,16 @@ DROP TABLE likes_dislikes;
 
 
 INSERT INTO users(id, name, email, password, role )
-VALUES("a01", "Gleice", "gleiscylima@gmail.com", "gleicea123", "usuario"),
-("a02", "Pedro", "pedrolima@gmail.com", "pedroa123", "usuario"),
-("a03", "Layane", "layanelima@gmail.com", "layane123", "usuario"),
-("a04", "Bruna", "brunalima@gmail.com", "gleicea123", "usuario"), 
-("a05", "Ricardo", "ricardolima@gmail.com", "ricardoa123", "usuario");
+VALUES("a01", "Gleice", "gleiscylima@gmail.com", "gleicea123", "administrador"),
+("a02", "Pedro", "pedrolima@gmail.com", "pedroa123", "administrador"),
+("a03", "Layane", "layanelima@gmail.com", "layane123", "administrador"),
+("a04", "Bruna", "brunalima@gmail.com", "gleicea123", "administrador"), 
+("a05", "Ricardo", "ricardolima@gmail.com", "ricardoa123", "administrador");
+INSERT INTO users(id, name, email, password, role )
+VALUES
+
+("a06", "tathy", "tathylima@gmail.com", "tathya123", "administrador");
+
 
 
 INSERT INTO posts(id, creator_id,  content, likes, dislikes  )
@@ -69,5 +74,7 @@ DROP TABLE likes_dislikes;
 SELECT * FROM users;
 SELECT * FROM posts;
 SELECT * FROM likes_dislikes;
+
+DROP TABLE posts;
 
 
