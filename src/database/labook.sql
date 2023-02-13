@@ -5,7 +5,7 @@
 --criando as seguintes tabelas: users, posts e likes_dislikes
 CREATE TABLE users (
   id TEXT PK UNIQUE DEFAULT NULL ,
-  name TEXT NOT  NULL,
+  name TEXT  DEFAULT NULL,
   email TEXT  NOT  NULL,
   password TEXT NOT  NULL,
   role TEXT DEFAULT NULL ,

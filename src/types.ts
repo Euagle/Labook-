@@ -28,6 +28,16 @@ export interface TPostsDB {
 
 }
 
+export interface TPostsDBi {
+    id: string,
+    content: string,
+    likes: number,
+    dislikes: number,
+    created_at: string,
+    updated_at: string
+
+}
+
 export interface TLikes_dislikesDB{
     user_id: string,
     post_id: string,

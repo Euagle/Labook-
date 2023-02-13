@@ -6,3 +6,5 @@ export const userRouter = express.Router()
 const userController = new UserController()
 
 userRouter.post('/', userController.postUsers)
+userRouter.post('/', userController.PostLogin)
+

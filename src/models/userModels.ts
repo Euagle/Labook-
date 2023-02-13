@@ -1,3 +1,5 @@
+import { TPostsDB, TPostsDBi } from "../types"
+
 export class User {    
     constructor(
         private id: string,
@@ -7,6 +9,16 @@ export class User {
         private role: string
     ) {}
 
+    // public toBusinessModel():  TPostsDB {
+    //     return {
+    //         id: this.id,
+            // id: this.id,
+            // content: this.
+            // likes: this.likes,
+            // deslike: this.deslike,
+            // created_at: this.
+    //     }
+    // }
     public getId(): string {
         return this.id
     }
