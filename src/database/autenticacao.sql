@@ -1,14 +1,44 @@
+-- Active: 1676376736243@@127.0.0.1@3306
+-- CREATE TABLE users (
+--     id TEXT PRIMARY KEY UNIQUE NOT NULL,
+--     name TEXT NOT NULL,
+--     email TEXT UNIQUE NOT NULL,
+--     password TEXT NOT NULL,
+--     role TEXT NOT NULL,
+--     created_at TEXT DEFAULT (DATETIME()) NOT NULL
+-- );
+
+-- INSERT INTO users (id, name, email, password, role)
+-- VALUES
+-- 	("u001", "Fulano", "fulano@email.com", "fulano123", "NORMAL"),
+-- 	("u002", "Beltrana", "beltrana@email.com", "beltrana00", "NORMAL"),
+-- 	("u003", "Astrodev", "astrodev@email.com", "astrodev99", "ADMIN");
+
+-- CREATE TABLE products (
+--     id TEXT PRIMARY KEY UNIQUE NOT NULL,
+--     name TEXT NOT NULL,
+--     price REAL NOT NULL,
+--     created_at TEXT DEFAULT (DATETIME()) NOT NULL
+-- );
+
+-- INSERT INTO products (id, name, price)
+-- VALUES
+-- 	("p001", "Mouse", 50),
+-- 	("p002", "Teclado", 80),
+-- 	("p003", "Monitor", 700);
+
+
 -- Active: 1675429441295@@127.0.0.1@3306
 
 
 
 --criando as seguintes tabelas: users, posts e likes_dislikes
 CREATE TABLE users (
-  id TEXT PK UNIQUE DEFAULT NULL ,
-  name TEXT  DEFAULT NULL,
+  id TEXT PK UNIQUE NOT NULL ,
+  name TEXT  NOT NULL,
   email TEXT  NOT  NULL,
   password TEXT NOT  NULL,
-  role TEXT DEFAULT NULL ,
+  role TEXT NOT NULL ,
   created_at TEXT DEFAULT (DATETIME('now')) NOT NULL
 );
 DROP TABLE users;

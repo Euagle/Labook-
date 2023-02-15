@@ -1,35 +1,34 @@
-export interface TUserDB {
+export enum USER_ROLES {
+    NORMAL = "NORMAL",
+    ADMIN = "ADMIN"
+}
+
+export interface TokenPayload {
+    id: string,
+    name: string,
+    role: USER_ROLES
+}
+
+export interface UserDB {
     id: string,
     name: string,
     email: string,
     password: string,
-    role: string,
+    role: USER_ROLES,
     created_at: string
 }
 
-
-//type para post
-export interface TUser {
+export interface UserModel {
+    id: string,
     name: string,
     email: string,
     password: string,
-   
+    role: USER_ROLES,
+    createdAt: string
 }
-
-
 export interface TPostsDB {
     id: string,
     creator_id: string,
-    content: string,
-    likes: number,
-    dislikes: number,
-    created_at: string,
-    updated_at: string
-
-}
-
-export interface TPostsDBi {
-    id: string,
     content: string,
     likes: number,
     dislikes: number,
@@ -43,3 +42,22 @@ export interface TLikes_dislikesDB{
     post_id: string,
     like: number
 }
+// export interface ProductDB {
+//     id: string,
+//     name: string,
+//     price: number,
+//     created_at: string
+// }
+
+// export interface ProductDBPost {
+//     id: string,
+//     name: string,
+//     price: number
+// }
+
+// export interface ProductModel {
+//     id: string,
+//     name: string,
+//     price: number,
+//     createdAt: string
+// }
