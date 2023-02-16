@@ -1,104 +1,93 @@
 
+import { Request , Response } from "express";
+import { PostBusiness } from "../business/PostBusiness";
+import { DeletePostInputDTO, PostDTO } from "../dtos/postsDTO";
+// import { PostDTO } from "../dtos/PostDTO";
+import { BaseError } from "../errors/BaseError";
 
-// import { Request , Response } from "express";
-// import { PostBusiness } from "../business/PostBusiness";
-// import { BaseError } from "../errors/BaseError";
+export class PostController {
+    constructor(
+        private postBusiness : PostBusiness,
+        private postDTO : PostDTO
+    ){}
 
-// export class PostController {
-//     public getPosts = async (req: Request, res: Response) => {
-//         try {
-//             const postBusiness = new PostBusiness();
-//             const output = await postBusiness.getPosts();
+    public getPosts = async (req: Request, res: Response) => {
+        try {
+            const token = req.headers.authorization;
 
-//             res.status(200).send(output);
-//         } catch (error) {
-//             console.log(error)
+            const input = this.postDTO.getPostInput(token);
+            const output = await this.postBusiness.getPosts(input);
 
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
+            res.status(200).send(output);
+        } catch (error) {
+            console.log(error)
 
-//     public createPost = async (req: Request, res: Response) => {
-//         try {
-//             const content = req.body
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
+    public createPost = async (req: Request, res: Response) => {
+        try {
+            const content = req.body.content;
+            const token = req.headers.authorization;
 
-//             const input = {
-//                 content
-//             }
+            const input = this.postDTO.createPost(content, token);
+            await this.postBusiness.createPost(input);
 
-//             const postBusiness = new PostBusiness();
-//             await postBusiness.createPost(input);
+            res.status(201).send("CREATED");
+        } catch (error) {
+            console.log(error)
 
-//             res.status(201).send("Post criado com sucesso");
-//         } catch (error) {
-//             console.log(error)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+        
+    }
+    public editPost = async(req: Request, res: Response) => {
+        try {
+            const id = req.params.id;
+            const content = req.body.content;
+            const token = req.headers.authorization;
 
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
-// }
+            const input = this.postDTO.editPost(id, content, token);
+            await this.postBusiness.editPost(input);
 
-// ------------------------------------------------------
+            res.status(200).send("OK");
+        } catch (error) {
+            console.log(error)
 
-// import { Request, Response } from "express"
-// import { ProductBusiness } from "../business/ProductBusiness"
-// import { CreateProductInput, GetProductsInput } from "../dtos/ProductDTO"
-// import { BaseError } from "../errors/BaseError"
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
+    public deletePost = async (req: Request, res: Response) => {
+        try {
+            const input: DeletePostInputDTO = {
+                id: req.params.id,
+                token: req.headers.authorization
+            }
 
-// export class ProductController {
-//     constructor(
-//         private productBusiness: ProductBusiness
-//     ) {}
+            await this.postBusiness.deletPost(input)
 
-//     public getProducts = async (req: Request, res: Response) => {
-//         try {
-//             const input: GetProductsInput = {
-//                 q: req.query.q
-//             }
+            res.status(200).end("OK")
+        } catch (error) {
+            console.log(error)
+            if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+    }
 
-//             const output = await this.productBusiness.getProducts(input)
-
-//             res.status(200).send(output)
-//         } catch (error) {
-//             console.log(error)
-
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
-
-//     public createProduct = async (req: Request, res: Response) => {
-//         try {
-
-//             const input: CreateProductInput = {
-//                 // id: req.body.id,
-//                 name: req.body.name,
-//                 price: req.body.price
-//             }
-
-//             const output = await this.productBusiness.createProduct(input)
-
-//             res.status(201).send(output)
-//         } catch (error) {
-//             console.log(error)
-
-//             if (error instanceof BaseError) {
-//                 res.status(error.statusCode).send(error.message)
-//             } else {
-//                 res.status(500).send("Erro inesperado")
-//             }
-//         }
-//     }
-// }
+}
 

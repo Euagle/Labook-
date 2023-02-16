@@ -1,175 +1,171 @@
 
 
-// --------------------------------------------------------
 
-// parte correta
-// import Post
-// import { UserDatabase } from "../database/UserDatabase";
-// import { BadRequesteError } from "../error/BadRequest";
-// import { Post } from "../models/postModels";
-// import { TPostsDB, TUserDB } from "../types";
-
-// export class PostBusiness {
-//     public async getPosts(){
-//         const postDatabase = new PostsDatabase();
-//         const postsDB = await postDatabase.getAllPost();
-
-//         const userDatabase = new UserDatabase();
-//         const usersDB = await userDatabase.findUsers(q);
-
-//         const output = postsDB.map(post => new Post (
-//             post.id,
-//             post.content,
-//             post.likes,
-//             post.dislikes,
-//             post.created_at,
-//             post.updated_at,
-//             getCreator(post.creator_id)
-//         ));
-
-//         function getCreator(userId : string){
-//             const user = usersDB.find(userDB => userDB.id === userId) as TUserDB;
-
-//             return {
-//                 id: user.id,
-//                 name: user.name
-//             }
-//         }
-
-//         return output;
-//     }
-
-//     public async createPost(input : any){
-//         const { content } = input;
-//         const postDatabase = new PostsDatabase();
-
-//         if (typeof content !== "string"){
-//             throw new BadRequesteError("'content' deve ser uma string");
-//         }
-
-//         const id = ((new Date()).getTime()).toString();
-//         const createdAt = (new Date()).toISOString();
-
-//         const newPost = new Post (
-//             id,
-//             content,
-//             0,
-//             0,
-//             createdAt,
-//             createdAt,
-//             {
-//                 id: "a00",
-//                 name: "Pedro Henri"
-//             }
-//         )
-
-//         const newPostDB : TPostsDB = {
-//             id: newPost.getId(),
-//             creator_id: newPost.getCreator().id,
-//             content: newPost.getContent(),
-//             likes: newPost.getLikes(),
-//             dislikes: newPost.getDislikes(),
-//             created_at: newPost.getCreatedAt(),
-//             updated_at: newPost.getUpdatedAt()
-//         }
-
-//         await postDatabase.createPost(newPostDB);
-//     }}
+import { PostDatabase } from "../database/postDataBase";
+import { UserDatabase } from "../database/UserDatabase";
+import { CreatePostInputDTO, DeletePostInputDTO, EditPostInputDTO, GetPostInputDTO, GetPostOutputDTO, PostDTO } from "../dtos/postsDTO";
+import { BadRequestError } from "../errors/BadRequestError";
+import { ForbiddenError } from "../errors/ForbiddenError";
+import { NotFoundError } from "../errors/NotFoundError";
+import { Post } from "../models/post";
+import { IdGenerator } from "../services/IdGenerator";
+import { TokenManager } from "../services/TokenManager";
+import { UserDB, USER_ROLES } from "../types";
 
 
 
 
 
-// import { ProductDatabase } from "../database/ProductDatabase"
-// import { CreateProductInput, CreateProductOutput, GetProductsInput, GetProductsOutput } from "../dtos/productDTO"
-// import { BadRequestError } from "../errors/BadRequestError"
-// import { Product } from "../models/Product"
-// import { IdGenerator } from "../services/IdGenerator"
+export class PostBusiness {
+    constructor(
+        private postDatabase : PostDatabase,
+        private userDatabase : UserDatabase,
+        // private likesDislikesDatabase : LikesDislikesDatabase,
+        private postDTO : PostDTO,
+        private idGenerator : IdGenerator,
+        private tokenManager: TokenManager
+    ){}
 
-// export class ProductBusiness {
-//     constructor(
-//         private productDatabase: ProductDatabase,
-//         private idGenerator: IdGenerator
-//     ) {}
+    public async getPosts(input: GetPostInputDTO) : Promise<GetPostOutputDTO[]>{
+        const { token } = input;
 
-//     public getProducts = async (
-//         input: GetProductsInput
-//     ): Promise<GetProductsOutput> => {
-//         const { q } = input
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
 
-//         if (typeof q !== "string" && q !== undefined) {
-//             throw new BadRequestError("'q' deve ser string ou undefined")
-//         }
+        const postsDB = await this.postDatabase.findPosts();
+        const usersDB = await this.userDatabase.findUsers();
 
-//         const productsDB = await this.productDatabase.findProducts(q)
+        const output = postsDB.map(postDB => {
+            const post = new Post (
+                postDB.id,
+                postDB.content,
+                postDB.likes,
+                postDB.dislikes,
+                postDB.created_at,
+                postDB.updated_at,
+                getCreator(postDB.creator_id)
+            );
 
-//         const products = productsDB.map((productDB) => {
-//             const product = new Product(
-//                 productDB.id,
-//                 productDB.name,
-//                 productDB.price,
-//                 productDB.created_at
-//             )
+            return this.postDTO.getPostOutput(post);
+        })             
 
-//             return product.toBusinessModel()
-//         })
+        function getCreator(userId : string){
+            const user = usersDB.find(userDB => userDB.id === userId) as UserDB;
 
-//         const output: GetProductsOutput = products
+            return {
+                id: user.id,
+                name: user.name
+            }
+        }
 
-//         return output
-//     }
+        return output;
+    }
 
-//     public createProduct = async (
-//         input: CreateProductInput
-//     ): Promise<CreateProductOutput> => {
-//         // const { id, name, price } = input
-//         const { name, price } = input
+    
+    public async createPost(input : CreatePostInputDTO) : Promise<void>{
+        const { content , token } = input;
 
-//         // if (typeof id !== "string") {
-//         //     throw new BadRequestError("'id' deve ser string")
-//         // }
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
 
-//         if (typeof name !== "string") {
-//             throw new BadRequestError("'name' deve ser string")
-//         }
+        const id = this.idGenerator.generate();
+        const createdAt = (new Date()).toISOString();
+        const likes = 0;
+        const dislikes = 0;
 
-//         if (typeof price !== "number") {
-//             throw new BadRequestError("'price' deve ser number")
-//         }
+        const newPost = new Post (
+            id,
+            content,
+            likes,
+            dislikes,
+            createdAt,
+            createdAt,
+            {
+                id: payload.id, 
+                name: payload.name
+            }
+        )
 
-//         if (name.length < 2) {
-//             throw new BadRequestError("'name' deve possuir pelo menos 2 caracteres")
-//         }
+        const newPostDB = newPost.toDBModelBusiness();
+        await this.postDatabase.createPost(newPostDB);
+    }
 
-//         if (price <= 0) {
-//             throw new BadRequestError("'price' não pode ser zero ou negativo")
-//         }
-
-//         const id = this.idGenerator.generate()
-
-//         // const productDBExists = await this.productDatabase.findProductById(id)
-
-//         // if (productDBExists) {
-//         //     throw new BadRequestError("'id' já existe")
-//         // }
-
-//         const newProduct = new Product(
-//             id,
-//             name,
-//             price,
-//             new Date().toISOString()
-//         )
-
-//         const newProductDB = newProduct.toDBModel()
-//         await this.productDatabase.insertProduct(newProductDB)
-
-//         const output: CreateProductOutput = {
-//             message: "Producto cadastrado com sucesso",
-//             product: newProduct.toBusinessModel()
-//         }
-
-//         return output
-//     }
-// }
+    public async editPost(input : EditPostInputDTO) : Promise<void>{
+        
+        const { content , id , token } = input;
 
 
+        const postDB = await this.postDatabase.findPostId(id);
+        if (!postDB){
+            throw new NotFoundError("Não foi encontrado um post com esse id");
+        }
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        if (payload.id !== postDB.creator_id){
+            throw new ForbiddenError("Somente quem criou o post pode editá-lo");
+        }
+
+        const updatedAt = (new Date()).toISOString();
+
+        const updatedPost = new Post(
+            id,
+            content,
+            postDB.likes,
+            postDB.dislikes,
+            postDB.created_at,
+            updatedAt,
+            {
+                id: postDB.creator_id,
+                name: ""
+            }
+        )
+
+        const updatedPosts = updatedPost.toDBModelBusiness();
+        await this.postDatabase.edittePost(updatedPosts, id);
+    }
+    public deletPost = async (
+        input: DeletePostInputDTO
+    ): Promise<void> => {
+        const { id, token } = input
+
+        if (token === undefined) {
+            throw new BadRequestError("token ausent")
+        }
+
+        const payload = this.tokenManager.getPayload(token)
+
+        if (payload === null) {
+            throw new BadRequestError("token inválido")
+        }
+
+        const postsDB = await this.postDatabase.findPostId(id)
+
+        if (postsDB === null) {
+            throw new NotFoundError("'id' não encontrado")
+        }
+
+        const creatorId = payload.id
+
+        // const isUserAdm = payload.role === USER_ROLES.ADMIN  &&
+        if(  postsDB.creator_id !==creatorId ){
+            throw new BadRequestError("somente quem criou o post pode deletá-lo")
+
+        }
+
+        if (
+            payload.role !== USER_ROLES.ADMIN
+        ) {
+            throw new BadRequestError("somente admin pode delete o post")
+        }
+
+        await this.postDatabase.deletePost(id)
+    }
+
+}

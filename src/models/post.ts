@@ -1,3 +1,5 @@
+import { postModel, TPostsDB, UserModel } from "../types"
+
 export class Post {
     constructor(
         private id : string,
@@ -73,4 +75,16 @@ export class Post {
     }){
         this.creator = value;
     }
+    public toDBModelBusiness() : TPostsDB {
+        return {
+            id: this.id,
+            content: this.content,
+            likes: this.likes,
+            dislikes: this.dislikes,
+            created_at: this.createdAt,
+            updated_at: this.updatedAt,
+            creator_id: this.creator.id
+        }
+    }
 }
+

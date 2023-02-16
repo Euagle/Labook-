@@ -21,7 +21,7 @@ export class UserBusiness {
             throw new BadRequestError("'q' deve ser string ou undefined")
         }
 
-        const usersDB = await this.userDatabase.findUsers(q)
+        const usersDB = await this.userDatabase.findUsers()
 
         const users = usersDB.map((userDB) => {
             const user = new User(

@@ -1,8 +1,9 @@
-import express from 'express'
+import express   from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 // import { postRouter } from './router/postRouter'
 import { userRouter } from './router/userRouter'
+import { postRouter } from './router/postRouter'
 
 dotenv.config()
 
@@ -16,4 +17,9 @@ app.listen(Number(process.env.PORT), () => {
 })
 
 app.use("/users", userRouter)
-// app.use("/products", postRouter)
+app.use("/posts", postRouter)
+
+
+// app.post("/posts", async ( req: Request, res: Response)=>{
+
+// })

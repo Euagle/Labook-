@@ -1,35 +1,4 @@
--- Active: 1676376736243@@127.0.0.1@3306
--- CREATE TABLE users (
---     id TEXT PRIMARY KEY UNIQUE NOT NULL,
---     name TEXT NOT NULL,
---     email TEXT UNIQUE NOT NULL,
---     password TEXT NOT NULL,
---     role TEXT NOT NULL,
---     created_at TEXT DEFAULT (DATETIME()) NOT NULL
--- );
-
--- INSERT INTO users (id, name, email, password, role)
--- VALUES
--- 	("u001", "Fulano", "fulano@email.com", "fulano123", "NORMAL"),
--- 	("u002", "Beltrana", "beltrana@email.com", "beltrana00", "NORMAL"),
--- 	("u003", "Astrodev", "astrodev@email.com", "astrodev99", "ADMIN");
-
--- CREATE TABLE products (
---     id TEXT PRIMARY KEY UNIQUE NOT NULL,
---     name TEXT NOT NULL,
---     price REAL NOT NULL,
---     created_at TEXT DEFAULT (DATETIME()) NOT NULL
--- );
-
--- INSERT INTO products (id, name, price)
--- VALUES
--- 	("p001", "Mouse", 50),
--- 	("p002", "Teclado", 80),
--- 	("p003", "Monitor", 700);
-
-
--- Active: 1675429441295@@127.0.0.1@3306
-
+-- Active: 1676558409027@@127.0.0.1@3306
 
 
 --criando as seguintes tabelas: users, posts e likes_dislikes
@@ -51,7 +20,7 @@ CREATE TABLE posts (
   dislikes INTEGER NOT  NULL,
   created_at TEXT DEFAULT (DATETIME('now')) NOT NULL,
     updated_at TEXT DEFAULT (DATETIME('now')) NOT NULL,
-     FOREIGN KEY (creator_id) REFERENCES users (id)
+     FOREIGN KEY (creator_id) REFERENCES users (id) ON DELETE CASCADE
 
 );
 DROP TABLE posts;
@@ -60,8 +29,8 @@ CREATE TABLE likes_dislikes (
   user_id TEXT NOT  NULL,
   post_id TEXT NOT  NULL,
   like INTEGER NOT  NULL,
-   FOREIGN KEY (user_id) REFERENCES users (id)
-    FOREIGN KEY (post_id) REFERENCES posts (id)
+   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    FOREIGN KEY (post_id) REFERENCES posts (id) ON DELETE CASCADE
 );
 
 DROP TABLE likes_dislikes;
@@ -70,15 +39,15 @@ DROP TABLE likes_dislikes;
 
 
 INSERT INTO users(id, name, email, password, role )
-VALUES("a01", "Gleice", "gleiscylima@gmail.com", "gleicea123", "administrador"),
-("a02", "Pedro", "pedrolima@gmail.com", "pedroa123", "administrador"),
-("a03", "Layane", "layanelima@gmail.com", "layane123", "administrador"),
-("a04", "Bruna", "brunalima@gmail.com", "gleicea123", "administrador"), 
-("a05", "Ricardo", "ricardolima@gmail.com", "ricardoa123", "administrador");
+VALUES("a01", "Gleice", "gleiscylima@gmail.com", "gleicea123", "ADMIN"),
+("a02", "Pedro", "pedrolima@gmail.com", "pedroa123", "NORMAL"),
+("a03", "Layane", "layanelima@gmail.com", "layane123", "NORMAL"),
+("a04", "Bruna", "brunalima@gmail.com", "gleicea123", "NORMAL"), 
+("a05", "Ricardo", "ricardolima@gmail.com", "ricardoa123", "NORMAL");
 INSERT INTO users(id, name, email, password, role )
 VALUES
 
-("a06", "tathy", "tathylima@gmail.com", "tathya123", "administrador");
+("a06", "tathy", "tathylima@gmail.com", "tathya123", "NORMAL");
 
 
 

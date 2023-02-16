@@ -36,6 +36,16 @@ export interface TPostsDB {
     updated_at: string
 
 }
+export interface postModel {
+    id: string,
+    content: string,
+    likes: number,
+    dislikes: number,
+    createdAt: string,
+    updatedAt: string
+
+}
+
 
 export interface TLikes_dislikesDB{
     user_id: string,

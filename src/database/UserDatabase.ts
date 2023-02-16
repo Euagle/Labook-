@@ -4,21 +4,21 @@ import { BaseDatabase } from "./BaseDatabase";
 export class UserDatabase extends BaseDatabase {
     public static TABLE_USERS = "users"
 
-    public async findUsers(q: string | undefined) {
+    public async findUsers() {
         let usersDB
 
-        if (q) {
+        // if (q) {
             const result: UserDB[] = await BaseDatabase
                 .connection(UserDatabase.TABLE_USERS)
-                .where("name", "LIKE", `%${q}%`)
+                // .where("name", "LIKE", `%${q}%`)
 
             usersDB = result
-        } else {
-            const result: UserDB[] = await BaseDatabase
-                .connection(UserDatabase.TABLE_USERS)
+        // } else {
+        //     const result: UserDB[] = await BaseDatabase
+        //         .connection(UserDatabase.TABLE_USERS)
 
-            usersDB = result
-        }
+        //     usersDB = result
+        // }
 
         return usersDB
     }

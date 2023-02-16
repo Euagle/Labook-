@@ -1,36 +1,67 @@
-import { ProductDB } from "../types";
+import { TPostsDB } from "../types";
 import { BaseDatabase } from "./BaseDatabase";
+// import { PostDB } from "../types";
 
-export class ProductDatabase extends BaseDatabase {
-    public static TABLE_PRODUCTS = "products"
+export class PostDatabase extends BaseDatabase {
+    public static TABLE_POSTS = "posts";
 
-    public async findProducts(q: string | undefined) {
-        if (q) {
-            const result: ProductDB[] = await BaseDatabase
-                .connection(ProductDatabase.TABLE_PRODUCTS)
-                .where("name", "LIKE", `%${q}%`)
-
-            return result
-
-        } else {
-            const result: ProductDB[] = await BaseDatabase
-                .connection(ProductDatabase.TABLE_PRODUCTS)
-
-            return result
-        }
+    public async findPosts(){
+        const result : TPostsDB[] = await BaseDatabase
+            .connection(PostDatabase.TABLE_POSTS);
+        return result;
     }
 
-    public async findProductById(id: string) {
-        const [ productDB ]: ProductDB[] | undefined[] = await BaseDatabase
-            .connection(ProductDatabase.TABLE_PRODUCTS)
-            .where({ id })
-
-        return productDB
+    public async findPostId(id : string){
+        const [ result ] : TPostsDB[] | undefined[] = await BaseDatabase
+            .connection(PostDatabase.TABLE_POSTS)
+            .where({ id });
+        return result;
     }
 
-    public async insertProduct(newProductDB: ProductDB) {
+    public async createPost(newPostDB : TPostsDB){
         await BaseDatabase
-            .connection(ProductDatabase.TABLE_PRODUCTS)
-            .insert(newProductDB)
+            .connection(PostDatabase.TABLE_POSTS)
+            .insert(newPostDB);
+    }
+
+    public async edittePost(updatedPostDB : TPostsDB, id : string){
+        await BaseDatabase
+            .connection(PostDatabase.TABLE_POSTS)
+            .update(updatedPostDB)
+            .where({ id })
+    }
+
+    public async deletePost(id : string){
+        await BaseDatabase
+            .connection(PostDatabase.TABLE_POSTS)
+            .del()
+            .where({ id });
     }
 }
+
+
+
+// import { TPostsDB } from "../types"
+// import { BaseDatabase } from "./BaseDatabase"
+
+// export class PostDatabase extends BaseDatabase {
+//     public static TABLE_POSTS = "posts"
+
+//     public async findPOSTS(q: string | undefined) {
+//         let postsDB
+
+//         if (q) {
+//             const result: TPostsDB[] = await BaseDatabase
+//                 .connection(PostDatabase.TABLE_POSTS)
+//                 .where("name", "LIKE", `%${q}%`)
+
+//             postsDB = result
+//         } else {
+//             const result: TPostsDB[] = await BaseDatabase
+//                 .connection(PostDatabase.TABLE_POSTS)
+
+//             postsDB = result
+//         }
+
+//         return postsDB
+//     }}
