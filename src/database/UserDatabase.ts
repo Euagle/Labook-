@@ -13,12 +13,7 @@ export class UserDatabase extends BaseDatabase {
                 // .where("name", "LIKE", `%${q}%`)
 
             usersDB = result
-        // } else {
-        //     const result: UserDB[] = await BaseDatabase
-        //         .connection(UserDatabase.TABLE_USERS)
-
-        //     usersDB = result
-        // }
+        
 
         return usersDB
     }

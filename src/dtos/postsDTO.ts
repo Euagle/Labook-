@@ -12,11 +12,7 @@ export interface EditPostInputDTO {
     token: string
 }
 
-// export interface EditPostLikesInputDTO {
-//     id : string
-//     like : boolean
-//     token: string
-// }
+
 
 export interface GetPostInputDTO {
     token: string

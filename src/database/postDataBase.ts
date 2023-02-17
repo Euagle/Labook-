@@ -1,6 +1,5 @@
 import { TPostsDB } from "../types";
 import { BaseDatabase } from "./BaseDatabase";
-// import { PostDB } from "../types";
 
 export class PostDatabase extends BaseDatabase {
     public static TABLE_POSTS = "posts";
@@ -42,27 +41,3 @@ export class PostDatabase extends BaseDatabase {
 
 
 
-// import { TPostsDB } from "../types"
-// import { BaseDatabase } from "./BaseDatabase"
-
-// export class PostDatabase extends BaseDatabase {
-//     public static TABLE_POSTS = "posts"
-
-//     public async findPOSTS(q: string | undefined) {
-//         let postsDB
-
-//         if (q) {
-//             const result: TPostsDB[] = await BaseDatabase
-//                 .connection(PostDatabase.TABLE_POSTS)
-//                 .where("name", "LIKE", `%${q}%`)
-
-//             postsDB = result
-//         } else {
-//             const result: TPostsDB[] = await BaseDatabase
-//                 .connection(PostDatabase.TABLE_POSTS)
-
-//             postsDB = result
-//         }
-
-//         return postsDB
-//     }}

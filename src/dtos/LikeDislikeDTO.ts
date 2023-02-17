@@ -1,5 +1,4 @@
 import { BadRequestError } from "../errors/BadRequestError";
-// import { EditPostLikesInputDTO } from "./postsDTO";
 
 export class LikeDislike {
     constructor(

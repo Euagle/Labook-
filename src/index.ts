@@ -22,7 +22,3 @@ app.use("/posts", postRouter)
 app.use("/posts", likeDislikeRouter)
 
 
-
-// app.post("/posts", async ( req: Request, res: Response)=>{
-
-// })
