@@ -46,11 +46,17 @@ export interface postModel {
 
 }
 
-
-export interface TLikes_dislikesDB{
+export interface PlaylistWithCreatorDB extends postModel {
+    creator_name: string
+}
+export interface TLikesdislikesDB{
     user_id: string,
     post_id: string,
     like: number
+}
+export enum POST_LIKE {
+    ALREADY_LIKED = "ALREADY LIKED",
+    ALREADY_DISLIKED = "ALREADY DISLIKED"
 }
 // export interface ProductDB {
 //     id: string,

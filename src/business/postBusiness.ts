@@ -10,8 +10,8 @@ import { NotFoundError } from "../errors/NotFoundError";
 import { Post } from "../models/post";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
-import { UserDB, USER_ROLES } from "../types";
-
+import { POST_LIKE, TLikesdislikesDB, UserDB, USER_ROLES } from "../types";
+// import { LikesDislikesDatabase } from "../database/LikesDislikesDatabase";
 
 
 
@@ -167,5 +167,85 @@ export class PostBusiness {
 
         await this.postDatabase.deletePost(id)
     }
+
+    
+    // public likeDislikePost = async (
+    //     input: EditPostLikesInputDTO
+    // ): Promise<void> => {
+    //     const { id, token, like } = input
+
+    //     if (token === undefined) {
+    //         throw new BadRequestError("token ausente")
+    //     }
+
+    //     const payload = this.tokenManager.getPayload(token)
+
+    //     if (payload === null) {
+    //         throw new BadRequestError("token inválido")
+    //     }
+
+    //     if (typeof like !== "boolean") {
+    //         throw new BadRequestError("'like' deve ser boolean")
+    //     }
+
+    //     const creadorPost = await this.postDatabase
+    //         .findPostId(id)
+
+    //     if (!creadorPost) {
+    //         throw new NotFoundError("'id' não encontrado")
+    //     }
+
+    //     const userId = payload.id
+    //     const likeSQLite = like ? 1 : 0
+
+    //     const likeDislikeDB: TLikesdislikesDB = {
+    //         user_id: userId,
+    //         post_id: creadorPost.id,
+    //         like: likeSQLite
+    //     }
+
+    //     const likes = new Post(
+    //         creadorPost.id,
+    //         creadorPost.content,
+    //         creadorPost.likes,
+    //         creadorPost.dislikes,
+    //         creadorPost.created_at,
+    //         creadorPost.updated_at,
+    //         creadorPost.creator_id
+           
+    //     )
+
+    //     const likeDislikeExists = await this.LikesDislikesDatabase.findLikeDislike(likeDislikeDB)
+
+    //     if (likeDislikeExists === POST_LIKE.ALREADY_LIKED) {
+    //         if (like) {
+    //             await this.LikesDislikesDatabase.removeLikeDislike(likeDislikeDB)
+    //             playlist.removeLike()
+    //         } else {
+    //             await this.LikesDislikesDatabase.updateLikeDislike(likeDislikeDB)
+    //             playlist.removeLike()
+    //             playlist.addDislike()
+    //         }
+
+    //     } else if (likeDislikeExists === POST_LIKE.ALREADY_DISLIKED) {
+    //         if (like) {
+    //             await this.postDatabase.edittePost(likeDislikeDB)
+    //             playlist.removeDislike()
+    //             playlist.addLike()
+    //         } else {
+    //             await this.playlistDatabase.removeLikeDislike(likeDislikeDB)
+    //             playlist.removeDislike()
+    //         }
+
+    //     } else {
+    //         await this.playlistDatabase.likeOrDislikePlaylist(likeDislikeDB)
+    
+    //         like ? playlist.addLike() : playlist.addDislike()
+    //     }
+
+    //     const updatedPlaylistDB = playlist.toDBModel()
+    
+    //     await this.playlistDatabase.update(idToLikeOrDislike, updatedPlaylistDB)
+    // }
 
 }

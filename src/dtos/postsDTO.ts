@@ -12,11 +12,11 @@ export interface EditPostInputDTO {
     token: string
 }
 
-export interface EditPostLikesInputDTO {
-    id : string
-    like : boolean
-    token: string
-}
+// export interface EditPostLikesInputDTO {
+//     id : string
+//     like : boolean
+//     token: string
+// }
 
 export interface GetPostInputDTO {
     token: string
@@ -135,21 +135,4 @@ export class PostDTO {
         return result;
     }
     
-    editPostLikes = (id : string, like : unknown, token: unknown) : EditPostLikesInputDTO => {
-        
-        if (typeof like !== "boolean"){
-            throw new BadRequestError("'like' deve ser um boolean");
-        }
-        if (typeof token !== "string"){
-            throw new BadRequestError("Token inválido");
-        }
-
-        const result : EditPostLikesInputDTO = {
-            id,
-            like,
-            token
-        }
-
-        return result;
-    }
 }

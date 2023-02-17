@@ -52,11 +52,11 @@ VALUES
 
 
 INSERT INTO posts(id, creator_id,  content, likes, dislikes  )
-VALUES("p01", "a01", "Foto na praia", 300, 2 ),
-("p02", "a02", "Foto do céu", 100, 5 ),
-("p03", "a03", "Foto da cachoeira", 800, 0 ),
-("p04", "a04", "Foto do por do sol", 500, 0 ),
-("p05", "a05", "Foto do mar", 700 , 1 );
+VALUES("p01", "a01", "Foto na praia", 1, 0 ),
+("p02", "a02", "Foto do céu", 0, 1 ),
+("p03", "a03", "Foto da cachoeira", 1, 0 ),
+("p04", "a04", "Foto do por do sol", 1, 0 ),
+("p05", "a05", "Foto do mar", 1 , 0 );
 
 DROP TABLE posts;
 
@@ -75,5 +75,19 @@ SELECT * FROM posts;
 SELECT * FROM likes_dislikes;
 
 DROP TABLE posts;
+
+SELECT
+    posts.id,
+    posts.creator_id,
+    posts.content,
+    posts.likes,
+    posts.dislikes,
+    posts.created_at,
+    posts.updated_at,
+    users.name AS creator_name
+FROM posts
+JOIN users
+ON posts.creator_id = users.id;
+
 
 
